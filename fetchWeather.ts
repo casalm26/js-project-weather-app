@@ -7,7 +7,7 @@ interface WeatherCondition {
   main: string;
   description: string;
   icon: string;
-}
+};
 
 interface MainWeatherData {
   temp: number;
@@ -16,20 +16,20 @@ interface MainWeatherData {
   temp_max: number;
   pressure: number;
   humidity: number;
-}
+};
 
 interface SysData {
   country: string;
   sunrise: number;
   sunset: number;
-}
+};
 
 interface WeatherResponse {
   name: string;
   main: MainWeatherData;
   weather: WeatherCondition[];
   sys: SysData;
-}
+};
 
 export interface ProcessedWeatherData {
   cityName: string;
@@ -38,27 +38,27 @@ export interface ProcessedWeatherData {
   weatherId: number;
   sunrise: string;
   sunset: string;
-}
+};
 
 interface ForecastItem {
   dt: number;
   main: MainWeatherData;
   weather: WeatherCondition[];
-}
+};
 
 interface ForecastResponse {
   list: ForecastItem[];
   city: {
     name: string;
   };
-}
+};
 
 export interface ProcessedForecastData {
   date: string;
   temperature: number;
   weatherDescription: string;
   weatherId: number;
-}
+};
 
 const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
@@ -92,7 +92,7 @@ export function fetchWeatherData(city: string): Promise<ProcessedWeatherData> {
       console.error('Error fetching weather data:', error);
       throw error;
     });
-}
+};
 
 export function fetchForecastData(city: string): Promise<ProcessedForecastData[]> {
   return fetch(`${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`)
@@ -126,4 +126,4 @@ export function fetchForecastData(city: string): Promise<ProcessedForecastData[]
       console.error('Error fetching forecast data:', error);
       throw error;
     });
-} 
+}; 
