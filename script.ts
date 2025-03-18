@@ -25,7 +25,7 @@ const checkWeatherState = (filter: WeatherState): string => {
   return currentWeatherState
 }
 
-const displayTodaysWeather = (currentWeatherState: string) => {
+const displayTodaysWeather = (today: Date, currentWeatherState: string) => {
   // Print current weather in the weatherCard
   // WeatherState | WeatherState.State(temp)
   // Sunrise today.sunrise(time)
