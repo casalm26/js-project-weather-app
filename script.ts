@@ -1,3 +1,13 @@
+// DOM ELEMENTS
+// Function to get DOM elements by ID
+const getElement = (id: string): HTMLElement | null =>
+  document.getElementById(id)
+
+const elements = {
+  weatherContainer: getElement("weather-container"),
+  todaysWeatherContainer: getElement("todays-weather-container")
+}
+
 // Enums
 enum WeatherState {
   Clear = "clear",
@@ -9,10 +19,9 @@ enum WeatherState {
 
 // Global variables
 let today: Date = new Date()
+let currentWeatherState: string = ""
 
 const checkWeatherState = (filter: WeatherState): string => {
-  let currentWeatherState: string = ""
-
   if (filter === WeatherState.Sun) {
     currentWeatherState = WeatherState.Sun
   } else if (filter === WeatherState.Clouds) {
@@ -25,9 +34,10 @@ const checkWeatherState = (filter: WeatherState): string => {
   return currentWeatherState
 }
 
-const displayTodaysWeather = (today: Date, currentWeatherState: string) => {
-  // Print current weather in the weatherCard
-  // WeatherState | WeatherState.State(temp)
-  // Sunrise today.sunrise(time)
-  // Sunset today.sunrise(time)
+const displayTodaysWeather = (today: Date, data: WeatherCardData) => {
+  // Mapping to today is missing
+  const { weather } = data
+  elements.todaysWeatherContainer.innerHTML = `<p>${currentWeatherState} | ${weather.temperature}</p>
+  <p>Sunrise: ${weather.sunrise}</p>
+  <p>Sunset: ${weather.sunset}</p>`
 }
