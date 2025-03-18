@@ -1,0 +1,77 @@
+import {
+  ProcessedWeatherData,
+  ProcessedForecastData,
+  fetchWeatherData,
+  fetchForecastData
+} from "./fetchWeather.js"
+
+interface WeatherCardData {
+  weather: ProcessedWeatherData
+  forecast: ProcessedForecastData[]
+}
+
+// Function to get DOM elements by ID
+const getElement = (id: string): HTMLElement | null =>
+  document.getElementById(id)
+
+// DOM ELEMENTS
+const elements = {
+  weatherContainer: getElement("weather-container"),
+  todaysWeatherContainer: getElement("todays-weather-container")
+}
+
+// ENUMS
+enum WeatherState {
+  Clear = "clear",
+  Sun = "sun", // What do we call this?
+  Clouds = "clouds",
+  Rain = "rain",
+  Snow = "snow"
+}
+
+// GLOBAL VARIABLES
+let today: Date = new Date()
+let currentWeatherState: string = ""
+
+// FUNCTIONS
+
+const checkWeatherState = (filter: WeatherState): string => {
+  if (filter === WeatherState.Sun) {
+    currentWeatherState = WeatherState.Sun
+  } else if (filter === WeatherState.Clouds) {
+    currentWeatherState = WeatherState.Clouds
+  } else if (filter === WeatherState.Rain) {
+    currentWeatherState = WeatherState.Rain
+  } else if (filter === WeatherState.Snow) {
+    currentWeatherState = WeatherState.Snow
+  }
+  return currentWeatherState
+}
+
+const displayTodaysWeather = (
+  currentWeatherState: string,
+  data: WeatherCardData,
+  temperatureCelsius: number
+) => {
+  if (!elements.todaysWeatherContainer) {
+    console.error("todaysWeatherContainer is not found in the DOM.")
+    return
+  }
+
+  if (!data || !data.weather || !data.weather.temperature) {
+    console.error("Weather data is missing or malformed.")
+    return
+  }
+  const temperature = data.weather.temperature
+  const sunrise = data.weather.sunrise
+  const sunset = data.weather.sunset
+
+  currentWeatherState =
+    data.weather.weatherDescription ?? "Unknown weather status"
+
+  elements.todaysWeatherContainer.innerHTML = `
+        <p>${currentWeatherState} | ${temperature}°C</p>
+        <p>Sunrise: ${sunrise}</p>
+        <p>Sunset: ${sunset}</p>
+    `
+}
