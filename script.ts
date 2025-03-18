@@ -1,4 +1,19 @@
-// Enums
+// Function to get DOM elements by ID
+const getElement = (id: string): HTMLElement | null => document.getElementById(id);
+
+// DOM ELEMENTS
+const elements = {
+  weatherContainer: getElement("weather-container"),
+};
+
+import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
+
+interface WeatherCardData {
+  weather: ProcessedWeatherData;
+  forecast: ProcessedForecastData[];
+}
+
+// ENUMS
 enum WeatherState {
   Clear = "clear",
   Sun = "sun", // What do we call this?
@@ -7,8 +22,11 @@ enum WeatherState {
   Snow = "snow"
 }
 
-// Global variables
+// GLOBAL VARIABLES
 let today: Date = new Date()
+
+
+// FUNCTIONS
 
 const checkWeatherState = (filter: WeatherState): string => {
   let currentWeatherState: string = ""
@@ -30,21 +48,6 @@ const displayTodaysWeather = (today: Date, currentWeatherState: string) => {
   // WeatherState | WeatherState.State(temp)
   // Sunrise today.sunrise(time)
   // Sunset today.sunrise(time)
-}
-
-  import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
-
-// Function to get DOM elements by ID
-const getElement = (id: string): HTMLElement | null => document.getElementById(id);
-
-// DOM ELEMENTS
-const elements = {
-  weatherContainer: getElement("weather-container"),
-};
-
-interface WeatherCardData {
-  weather: ProcessedWeatherData;
-  forecast: ProcessedForecastData[];
 }
 
 const createWeatherCard = (data: WeatherCardData): string => {
