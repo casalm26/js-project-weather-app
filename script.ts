@@ -1,3 +1,6 @@
+import "./forecast";  // Importera utan att exportera något
+import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
+
 // Function to get DOM elements by ID
 const getElement = (id: string): HTMLElement | null => document.getElementById(id);
 
@@ -6,8 +9,6 @@ const elements = {
   weatherContainer: getElement("weather-container"),
   todaysWeatherContainer: getElement("todays-weather-container")
 };
-
-import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
 
 interface WeatherCardData {
   weather: ProcessedWeatherData;
@@ -25,7 +26,7 @@ enum WeatherState {
 
 // GLOBAL VARIABLES
 let today: Date = new Date()
-let currentWeatherState:string = ""
+let currentWeatherState: string = ""
 
 
 // FUNCTIONS
@@ -45,9 +46,9 @@ const checkWeatherState = (filter: WeatherState): string => {
 
 const createWeatherCard = (data: WeatherCardData): string => {
   const { weather, forecast } = data;
-  
 
-// Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
+
+  // Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
   return `
     <div id="weather-content" class="weather-card">
       <div id="today-info">
@@ -106,4 +107,4 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
 document.addEventListener('DOMContentLoaded', () => {
   updateWeatherDisplay('London');
 })
-;
+  ;

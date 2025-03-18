@@ -1,12 +1,43 @@
-import { fetchWeatherData, fetchForecastData } from './fetchWeather';
+import "./forecast"; // Importera utan att exportera något
+import { fetchWeatherData, fetchForecastData } from './fetchWeather.js';
 // Function to get DOM elements by ID
 const getElement = (id) => document.getElementById(id);
 // DOM ELEMENTS
 const elements = {
     weatherContainer: getElement("weather-container"),
+    todaysWeatherContainer: getElement("todays-weather-container")
+};
+// ENUMS
+var WeatherState;
+(function (WeatherState) {
+    WeatherState["Clear"] = "clear";
+    WeatherState["Sun"] = "sun";
+    WeatherState["Clouds"] = "clouds";
+    WeatherState["Rain"] = "rain";
+    WeatherState["Snow"] = "snow";
+})(WeatherState || (WeatherState = {}));
+// GLOBAL VARIABLES
+let today = new Date();
+let currentWeatherState = "";
+// FUNCTIONS
+const checkWeatherState = (filter) => {
+    if (filter === WeatherState.Sun) {
+        currentWeatherState = WeatherState.Sun;
+    }
+    else if (filter === WeatherState.Clouds) {
+        currentWeatherState = WeatherState.Clouds;
+    }
+    else if (filter === WeatherState.Rain) {
+        currentWeatherState = WeatherState.Rain;
+    }
+    else if (filter === WeatherState.Snow) {
+        currentWeatherState = WeatherState.Snow;
+    }
+    return currentWeatherState;
 };
 const createWeatherCard = (data) => {
     const { weather, forecast } = data;
+    // Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
     return `
     <div id="weather-content" class="weather-card">
       <div id="today-info">
@@ -18,6 +49,7 @@ const createWeatherCard = (data) => {
             <p>${weather.weatherDescription}</p>
             <p>Sunrise: ${weather.sunrise}</p>
             <p>Sunset: ${weather.sunset}</p>
+{lindas funktion}
           </div>
         </div>
       </div>

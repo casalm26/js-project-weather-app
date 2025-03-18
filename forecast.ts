@@ -1,25 +1,43 @@
-import { fetchForecastData } from "./fetchWeather";
+import { fetchForecastData } from "./fetchWeather.js";
 
 const renderForecast = (city: string): void => {
   const forecastContainer: HTMLElement | null = document.getElementById("forecast-container");
 
-  if (!forecastContainer) return;
+  if (!forecastContainer) {
+    console.warn("⚠️ forecastContainer not found in the DOM!");
+    return;
+  }
+
   forecastContainer.innerHTML = "";
 
-  // GETTING FORECAST DATA from fetchWeather.ts
+  console.log(`🔍 Fetching forecast data for: ${city}`);
+
+  // Hämta prognosdata
   fetchForecastData(city)
     .then((forecastData: { date: string; temperature: number }[]) => {
+      console.log("✅ API Response:", forecastData);
+
+      // Om datan är tom, logga en varning
+      if (!forecastData.length) {
+        console.warn(`⚠️ No forecast data available for ${city}`);
+        forecastContainer.innerHTML = `<p>No forecast available for ${city}.</p>`;
+        return;
+      }
+
       forecastData.forEach((day) => {
+        console.log(`📅 Forecast for ${day.date}: ${day.temperature}°C`);
+
         const row: HTMLDivElement = document.createElement("div");
         row.classList.add("forecast-row");
         row.innerHTML = `
-          <span class="day">${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase()}</span>
+          <span class="day">${new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short' }).toLowerCase()}</span>
           <span class="temp">${day.temperature}°</span>
         `;
+
         forecastContainer?.appendChild(row);
       });
     })
     .catch((error) => {
-      console.error("Error fetching forecast data:", error);
+      console.error("❌ Error fetching forecast data:", error);
     });
 };
