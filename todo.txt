@@ -8,7 +8,7 @@ Functionality
     [] soluppgång & solnedgång
     [] 4-dagarsprognos
 [] Skapa en interface(?) för API-resultatet
-[] Create interface for weatherCard
+[] Create interface for weatherCard 
 [] Create enum + function for weather-conditions
 [] Create function to display today-info
 [] Create function to display an icon (displayIcon) - depending on weather condition
