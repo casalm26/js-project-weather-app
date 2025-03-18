@@ -1,0 +1,29 @@
+Functionality
+[x] Basic HTML structure
+[x] Create js card structure
+[] .Fetch in TS, from API 
+    [] Stadens namn 
+    [] temp (Tänkt på vilken tid opå dygnet)
+    [] väderbeskrivning
+    [] soluppgång & solnedgång
+    [] 4-dagarsprognos
+[] Skapa en interface(?) för API-resultatet
+[] Create interface for weatherCard
+[] Create enum + function for weather-conditions
+[] Create function to display today-info
+[] Create function to display an icon (displayIcon) - depending on weather condition
+    [] Create enum for icons
+[] Create function to display weather description (displayWeatherDescription) - depending on weather condition
+[] Create function to display weather-forecast
+[] 
+[]
+[]
+[] Search basic functionality
+[] 
+
+Design
+[] 
+[]
+[]
+[]
+[]
