@@ -1,22 +1,13 @@
-import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather';
-
+import { fetchWeatherData, fetchForecastData } from './fetchWeather';
 // Function to get DOM elements by ID
-const getElement = (id: string): HTMLElement | null => document.getElementById(id);
-
+const getElement = (id) => document.getElementById(id);
 // DOM ELEMENTS
 const elements = {
-  weatherContainer: getElement("weather-container"),
+    weatherContainer: getElement("weather-container"),
 };
-
-interface WeatherCardData {
-  weather: ProcessedWeatherData;
-  forecast: ProcessedForecastData[];
-}
-
-const createWeatherCard = (data: WeatherCardData): string => {
-  const { weather, forecast } = data;
-  
-  return `
+const createWeatherCard = (data) => {
+    const { weather, forecast } = data;
+    return `
     <div id="weather-content" class="weather-card">
       <div id="today-info">
         <h2>${weather.cityName}</h2>
@@ -46,30 +37,28 @@ const createWeatherCard = (data: WeatherCardData): string => {
     </div>
   `;
 };
-
 // Function to update the weather display
-const updateWeatherDisplay = async (city: string): Promise<void> => {
-  try {
-    const [weatherData, forecastData] = await Promise.all([
-      fetchWeatherData(city),
-      fetchForecastData(city)
-    ]);
-
-    if (elements.weatherContainer) {
-      elements.weatherContainer.innerHTML = createWeatherCard({
-        weather: weatherData,
-        forecast: forecastData
-      });
+const updateWeatherDisplay = async (city) => {
+    try {
+        const [weatherData, forecastData] = await Promise.all([
+            fetchWeatherData(city),
+            fetchForecastData(city)
+        ]);
+        if (elements.weatherContainer) {
+            elements.weatherContainer.innerHTML = createWeatherCard({
+                weather: weatherData,
+                forecast: forecastData
+            });
+        }
     }
-  } catch (error) {
-    console.error('Error updating weather display:', error);
-    if (elements.weatherContainer) {
-      elements.weatherContainer.innerHTML = '<p>Error loading weather data. Please try again.</p>';
+    catch (error) {
+        console.error('Error updating weather display:', error);
+        if (elements.weatherContainer) {
+            elements.weatherContainer.innerHTML = '<p>Error loading weather data. Please try again.</p>';
+        }
     }
-  }
 };
-
 // Initialize weather display for a default city
 document.addEventListener('DOMContentLoaded', () => {
-  updateWeatherDisplay('London');
+    updateWeatherDisplay('London');
 });
