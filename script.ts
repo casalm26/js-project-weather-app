@@ -4,6 +4,7 @@ const getElement = (id: string): HTMLElement | null => document.getElementById(i
 // DOM ELEMENTS
 const elements = {
   weatherContainer: getElement("weather-container"),
+  todaysWeatherContainer: getElement("todays-weather-container")
 };
 
 import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
@@ -24,13 +25,12 @@ enum WeatherState {
 
 // GLOBAL VARIABLES
 let today: Date = new Date()
+let currentWeatherState:string = ""
 
 
 // FUNCTIONS
 
 const checkWeatherState = (filter: WeatherState): string => {
-  let currentWeatherState: string = ""
-
   if (filter === WeatherState.Sun) {
     currentWeatherState = WeatherState.Sun
   } else if (filter === WeatherState.Clouds) {
@@ -43,16 +43,11 @@ const checkWeatherState = (filter: WeatherState): string => {
   return currentWeatherState
 }
 
-const displayTodaysWeather = (today: Date, currentWeatherState: string) => {
-  // Print current weather in the weatherCard
-  // WeatherState | WeatherState.State(temp)
-  // Sunrise today.sunrise(time)
-  // Sunset today.sunrise(time)
-}
-
 const createWeatherCard = (data: WeatherCardData): string => {
   const { weather, forecast } = data;
   
+
+// Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
   return `
     <div id="weather-content" class="weather-card">
       <div id="today-info">
@@ -64,6 +59,7 @@ const createWeatherCard = (data: WeatherCardData): string => {
             <p>${weather.weatherDescription}</p>
             <p>Sunrise: ${weather.sunrise}</p>
             <p>Sunset: ${weather.sunset}</p>
+{lindas funktion}
           </div>
         </div>
       </div>
