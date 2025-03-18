@@ -1,4 +1,3 @@
-//DOM
 // Function to get DOM elements by ID
 const getElement = (id: string): HTMLElement | null =>
   document.getElementById(id)
@@ -8,22 +7,47 @@ const elements = {
   weatherContainer: getElement("weather-container")
 }
 
-let currentCity = ""
+// GLOBAL VARIABLES
+let currentCity: string = ""
 
-const getLocation = () => {
+// Function to check geolocation support
+const checkGeolocationSupport = () => {
+  console.log("Checking geolocation support...")
+  let supportsGeolocation: boolean
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error)
+    return (supportsGeolocation = true)
   } else {
-    elements.weatherContainer.innerHTML =
-      "Geolocation is not supported by this browser."
+    return (supportsGeolocation = false)
   }
 }
 
-const success = (city: string) => {
-  currentCity = "" // Add API answer
-  return currentCity
+// Function to get the position from the geolocation API
+const getPosition = (): Promise<GeolocationPosition> => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  })
 }
 
-const error = () => {
-  alert("Sorry, no position available.")
+// Function to get city name via the method reverse geocode
+const getCityName = async (
+  latitude: number,
+  longitude: number
+): Promise<string> => {
+  try {
+    const response = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+    )
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch city name")
+    }
+
+    const data = await response.json()
+    console.log("Fetched city data:", data)
+
+    return data.city || "Unknown City"
+  } catch (error) {
+    console.error("Error getting city name:", error)
+    return "Unknown City" // Return a standard value if something goes wrong
+  }
 }
