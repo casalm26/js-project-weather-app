@@ -1,31 +1,148 @@
-.weather-container {
-  width: 100%;
+/*<weight>: Use a value from 100 to 900
+<uniquifier>: Use a unique and descriptive class name*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.todays-weather-container {
-  width: 100%;
-
+body {
+  font-family: "Montserrat", sans-serif;
+  /* font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal; */
 }
 
-.iconText-container {
-  width: 100%;
-
+.clear {
+  background-color: #F7E9B9;
+  color: #2A5510;
 }
 
-.forecast-container {
-  width: 100%;
+.rain {
+  background-color: #BDE8FA;
+  color: #164A68;
+}
+
+.clouds {
+  background-color: #F9FDFE;
+  color: #F47775;
+}
+
+.container {
+  margin: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.todays-weather {
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'opsz' 64;
+}
+
+.text {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.forecast-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed;
+  font-size: 16px;
+  line-height: 36px;
 }
 
 /* Search container styles */
 /* BYTA NAMN?*/
-.container {
+
+#search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#search-form input {
+  background: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
   width: 100%;
 }
 
-.search-form {
-  width: 100%;
+.clear #search-form input {
+  border: 3px solid #2A5510;
+}
+
+.clouds #search-form input {
+  border: 3px solid #F47775;
+}
+
+.rain #search-form input {
+  border: 3px solid #164A68;
 }
 
 .container button {
-  width: 100%;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+.clear button {
+  background: #2A5510
+}
+
+.rain button {
+  background: #164A68;
+}
+
+.clouds button {
+  background: #F47775;
+}
+
+@media (min-width: 414px) {
+
+  .todays-weather {
+    font-size: 21px;
+  }
+
+  .text {
+    font-size: 37px;
+  }
+
+  .forecast-row {
+    font-size: 21px;
+  }
+
+}
+
+@media (min-width: 760px) {
+  .container {
+    max-width: 500px;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 600px;
+  }
 }
