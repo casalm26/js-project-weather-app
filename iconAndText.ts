@@ -1,4 +1,4 @@
-// OBS!! this are the weather icons we have to get (https://openweathermap.org/weather-conditions#Icon-list)
+// OBS!! this are the weather icons we can get here  (https://openweathermap.org/weather-conditions#Icon-list)
 // Define WeatherState as an Enum
 enum WeatherState {
   Clear = 'Clear',
@@ -43,7 +43,7 @@ const catchyTextTemplate: Record<WeatherState, string> = {
 };
 
 // Function to get weatherinfo fron API respons and append it to `iconText-container`
-const renderWeatherInfo = (apiResponse: any): void => {
+export const renderWeatherInfo = (apiResponse: any): void => {
   // Get the container where we will append the new weather card
   const iconTextContainer = document.getElementById('iconText-container');
 
@@ -91,7 +91,8 @@ const renderWeatherInfo = (apiResponse: any): void => {
   iconTextContainer.appendChild(weatherCard);
 };
 
-// Function to load dummy API response from text from dummy_API_response.txt (all made by CHAT GPT)
+// Function för att load dummy API response from text from dummy_API_response.txt (Denna kan vi kopiera och använda för att i andra filer ----- import { renderWeatherInfo } from "./iconAndText";-----)
+
 const loadDummyData = async (): Promise<void> => {
   try {
     const response = await fetch('dummy_API_response.text'); // Load file
