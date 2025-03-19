@@ -1,4 +1,4 @@
-// OBS!! this are the weather icons we have to get (https://openweathermap.org/weather-conditions#Icon-list)
+// OBS!! this are the weather icons we can get here  (https://openweathermap.org/weather-conditions#Icon-list)
 // Define WeatherState as an Enum
 enum WeatherState {
   Clear = 'Clear',
@@ -42,8 +42,8 @@ const catchyTextTemplate: Record<WeatherState, string> = {
   [WeatherState.Tornado]: 'Tornado warning for {city}! Stay safe!',
 };
 
-// Function to get weatherinfo fron API respons and append it to `iconText-container`
-const renderWeatherInfo = (apiResponse: any): void => {
+// Function to render and Icoon and text `iconText-container`
+export const renderWeatherIconAndText = (apiResponse: any): void => {
   // Get the container where we will append the new weather card
   const iconTextContainer = document.getElementById('iconText-container');
 
@@ -63,7 +63,7 @@ const renderWeatherInfo = (apiResponse: any): void => {
   ) {
     validWeatherState = weatherStateString as WeatherState;
   } else {
-    validWeatherState = WeatherState.Clear; //Om det inte finns något väder eller om det inte passar någon av vår enums värde blir det Clear.
+    validWeatherState = WeatherState.Clear;
   }
 
   // Get the city name from API response (if no name = "your location")
@@ -76,7 +76,6 @@ const renderWeatherInfo = (apiResponse: any): void => {
   );
 
   // Get the weather icon URL from OpenWeatherMap
-  const iconCode = apiResponse.weather[0].icon;
   const iconUrl = `Assets/weather_icons/${validWeatherState}.svg`;
 
   // Create a new div for the weather card
@@ -91,8 +90,11 @@ const renderWeatherInfo = (apiResponse: any): void => {
   iconTextContainer.appendChild(weatherCard);
 };
 
-// Function to load dummy API response from text from dummy_API_response.txt (all made by CHAT GPT)
-const loadDummyData = async (): Promise<void> => {
+//Tar in dummy_API_response. Vi låtsats att användaren väljer staden STHLM (Denna kan vi kopiera och använda för att i andra filer ----- import { renderWeatherInfo } from "./iconAndText";-----)
+
+const selectedCity = 'Stockholm'; // Vi ersätter sen med vad vi får från APIet/userinput
+
+const loadWeatherForCity = async (city: string): Promise<void> => {
   try {
     const response = await fetch('dummy_API_response.text'); // Load file
     const text = await response.text(); // Convert to text
@@ -103,12 +105,22 @@ const loadDummyData = async (): Promise<void> => {
       .split('\n')
       .map((line) => JSON.parse(line));
 
-    // Render weather info for **each** object in the file
-    jsonObjects.forEach(renderWeatherInfo);
+    // Find the weather data for the selected city
+    const cityWeatherData = jsonObjects.find(
+      (entry) => entry.name.toLowerCase() === city.toLowerCase()
+    );
+
+    if (!cityWeatherData) {
+      console.warn(`No weather data found for ${city}`);
+      return;
+    }
+
+    // Render weather info for the selected city
+    renderWeatherIconAndText(cityWeatherData);
   } catch (error) {
     console.error('Error loading dummy data:', error);
   }
 };
 
 // Runingn function when load the page
-loadDummyData();
+loadWeatherForCity(selectedCity);
