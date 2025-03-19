@@ -1,41 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>It's raining men again</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    
-    <section id="weather-container">
-      <div class="weather-container-child" id="todays-weather-container"></div>
-      <div class="weather-container-child" id="iconText-container"></div>
-      <div class="weather-container-child" id="forecast-container"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>It's raining men again</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+</head>
+
+<body class="rain">
+  <div class="container">
+
+    <div id="todays-weather-container" class="todays-weather">
+      <div class="todays-weather-child" id="todays-weather-child">Clear | 23*
+      </div> <!-- DD -->
+      <div class="todays-weather-child" id="todays-weather-child">Sunrise 0800</div> <!-- DD -->
+      <div class="todays-weather-child" id="todays-weather-child">Sunset 22:30</div> <!-- DD -->
+    </div>
+
+    <!-- Icon and Text display OBS!!!!! Casandras kod behöver plocka ut icon-text-container istället för weather-container-->
+    <section id="icon-text">
+      <span class="material-symbols-outlined">
+        cloud
+      </span>
+      <!-- <img src="./Assests/weather_icons/Clouds.svg" alt="weather-icon" class="icon">DENNA MÅSTE BLI EN SPAN SOM FÅR EN VISS KLASS OCH ETT VISST VÄDER INUTI SIG -->
+      <h1 class="text">Get your sunnies on. Stockholm is looking rather great today. </h1> <!-- DD -->
     </section>
-    <div id="search"></div>
-    <div class="container">
+
+    <section id="forecast-container" class="forecast">
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+      <div class="forecast-row">
+        <span class="day">mån</span>
+        <span class="temp">23</span>
+      </div><!-- DD -->
+    </section>
+
+
+    <div id="search">
       <form id="search-form" class="search-form">
-        <input 
-          type="text" 
-          id="search-input" 
-          placeholder="Enter city name..."
-          aria-label="Search for a city"
-        >
+        <input type="text" id="search-input" placeholder="Enter city name..." aria-label="Search for a city">
         <button type="submit">Search</button>
       </form>
-
-      <!-- Weather display -->
-      <div id="todays-weather-container"></div>
-
-      <!-- Debug info -->
-      <div class="debug-info">
-        <p>Last searched city: <span id="last-searched">-</span></p>
-        <p>Search status: <span id="search-status">-</span></p>
-      </div>
     </div>
-    
-    <!-- Import both script files -->
-    <script type="module" src="dist/script.js"></script>
-  </body>
+
+    <!-- Debug info -->
+    <div class="debug-info">
+      <p>Last searched city: <span id="last-searched">-</span></p>
+      <p>Search status: <span id="search-status">-</span></p>
+    </div>
+  </div>
+
+  <!-- Import both script files -->
+  <script type="module" src="dist/script.js"></script>
+</body>
+
 </html>
