@@ -18,7 +18,6 @@ interface WeatherCardData {
 // ENUMS
 enum WeatherState {
   Clear = "clear",
-  Sun = "sun", // What do we call this?
   Clouds = "clouds",
   Rain = "rain",
   Snow = "snow"
@@ -31,9 +30,9 @@ let currentWeatherState: string = ""
 
 // FUNCTIONS
 
-const checkWeatherState = (filter: WeatherState): string => {
-  if (filter === WeatherState.Sun) {
-    currentWeatherState = WeatherState.Sun
+const checkWeatherState = (filter: WeatherState): void => {
+  if (filter === WeatherState.Clear) {
+    currentWeatherState = WeatherState.Clear
   } else if (filter === WeatherState.Clouds) {
     currentWeatherState = WeatherState.Clouds
   } else if (filter === WeatherState.Rain) {
@@ -41,14 +40,13 @@ const checkWeatherState = (filter: WeatherState): string => {
   } else if (filter === WeatherState.Snow) {
     currentWeatherState = WeatherState.Snow
   }
-  return currentWeatherState
-}
+};
 
-const createWeatherCard = (data: WeatherCardData): string => {
-  const { weather, forecast } = data;
+/*const createWeatherCard = (data: WeatherCardData): string => {
+  const { weather, forecast } = data;herCardData): string => {
+  
 
-
-  // Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
+// Return displayTodaysWeather, search, displayIcon, displayWeatherDescription and displayForecast
   return `
     <div id="weather-content" class="weather-card">
       <div id="today-info">
@@ -80,6 +78,7 @@ const createWeatherCard = (data: WeatherCardData): string => {
     </div>
   `;
 };
+};
 
 // Function to update the weather display
 const updateWeatherDisplay = async (city: string): Promise<void> => {
@@ -102,9 +101,8 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
     }
   }
 };
+*/
 
-// Initialize weather display for a default city
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
   updateWeatherDisplay('London');
-})
-  ;
+});*/
