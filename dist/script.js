@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import "./forecast"; // Importera utan att exportera något
 import { fetchWeatherData, fetchForecastData } from './fetchWeather.js';
+=======
+>>>>>>> origin/search-bar
 // Function to get DOM elements by ID
 const getElement = (id) => document.getElementById(id);
 // DOM ELEMENTS
@@ -7,6 +10,10 @@ const elements = {
     weatherContainer: getElement("weather-container"),
     todaysWeatherContainer: getElement("todays-weather-container")
 };
+<<<<<<< HEAD
+=======
+import { fetchWeatherData, fetchForecastData } from './fetchWeather.js';
+>>>>>>> origin/search-bar
 // ENUMS
 var WeatherState;
 (function (WeatherState) {
