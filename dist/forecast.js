@@ -2,23 +2,23 @@ import { fetchForecastData } from "./fetchWeather.js";
 const renderForecast = (city) => {
     const forecastContainer = document.getElementById("forecast-container");
     if (!forecastContainer) {
-        console.warn("⚠️ forecastContainer not found in the DOM!");
+        console.warn(" forecastContainer not found in the DOM!");
         return;
     }
     forecastContainer.innerHTML = "";
-    console.log(`🔍 Fetching forecast data for: ${city}`);
+    console.log(` Fetching forecast data for: ${city}`);
     // Hämta prognosdata
     fetchForecastData(city)
         .then((forecastData) => {
-        console.log("✅ API Response:", forecastData);
+        console.log(" API Response:", forecastData);
         // Om datan är tom, logga en varning
         if (!forecastData.length) {
-            console.warn(`⚠️ No forecast data available for ${city}`);
+            console.warn(` No forecast data available for ${city}`);
             forecastContainer.innerHTML = `<p>No forecast available for ${city}.</p>`;
             return;
         }
         forecastData.forEach((day) => {
-            console.log(`📅 Forecast for ${day.date}: ${day.temperature}°C`);
+            console.log(` Forecast for ${day.date}: ${day.temperature}°C`);
             const row = document.createElement("div");
             row.classList.add("forecast-row");
             row.innerHTML = `
@@ -29,6 +29,6 @@ const renderForecast = (city) => {
         });
     })
         .catch((error) => {
-        console.error("❌ Error fetching forecast data:", error);
+        console.error(" Error fetching forecast data:", error);
     });
 };
