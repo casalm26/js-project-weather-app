@@ -1,3 +1,6 @@
+import {checkGeolocationSupport} from "./geolocation.ts";
+let supportsGeolocation: boolean = false // should there be a default?
+
 // Function to handle error messages
 const handleErrorMessages = (error: string) => {
   console.error("Error detected:", error)
