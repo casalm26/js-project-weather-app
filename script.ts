@@ -10,6 +10,7 @@ const elements = {
   todaysWeatherContainer: getElement("todays-weather-container")
 };
 
+// INTERFACES
 interface WeatherCardData {
   weather: ProcessedWeatherData;
   forecast: ProcessedForecastData[];
@@ -41,6 +42,14 @@ const checkWeatherState = (filter: WeatherState): void => {
     currentWeatherState = WeatherState.Snow
   }
 };
+
+/*const displayTodaysWeather = (today: Date, data: WeatherCardData) => {
+  // Mapping to today is missing
+  const { weather } = data
+  elements.todaysWeatherContainer.innerHTML = `<p>${currentWeatherState} | ${weather.temperature}</p>
+  <p>Sunrise: ${weather.sunrise}</p>
+  <p>Sunset: ${weather.sunset}</p>`
+};*/
 
 /*const createWeatherCard = (data: WeatherCardData): string => {
   const { weather, forecast } = data;herCardData): string => {
@@ -106,3 +115,4 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
 /*document.addEventListener('DOMContentLoaded', () => {
   updateWeatherDisplay('London');
 });*/
+
