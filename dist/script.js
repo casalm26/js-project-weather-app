@@ -71,21 +71,18 @@ export function fetchForecastData(city) {
         return response.json();
     })
         .then((data) => {
-        // Get one forecast per day for the next 4 days
         const processedForecasts = new Map();
         data.list.forEach(item => {
-            const date = new Date(item.dt * 1000).toLocaleDateString();
-            // Only store the first forecast we see for each day
+            const date = new Date(item.dt * 1000).toISOString().split("T")[0]; // CHANGED: Store in ISO format (YYYY-MM-DD)
             if (!processedForecasts.has(date)) {
                 processedForecasts.set(date, {
-                    date,
+                    date: date, // Store as ISO format
                     temperature: Math.round(item.main.temp),
                     weatherDescription: item.weather[0].description,
                     weatherId: item.weather[0].id,
                 });
             }
         });
-        // Convert Map to Array and take first 4 days
         return Array.from(processedForecasts.values()).slice(0, 4);
     })
         .catch(error => {
@@ -148,30 +145,16 @@ const displayTodaysWeather = (today, data) => {
 //Bild och rolig text-funktion
 // Define catchyTextTemplate using city from API as a placeholder
 const catchyTextTemplate = {
-    [WeatherState.Clear]: 'Get your sunnies on. {city} is looking rather great today.',
-    [WeatherState.Rain]: 'Don’t forget your umbrella. It’s wet in {city} today.',
-    [WeatherState.Clouds]: 'Light a fire and get cosy. {city} is looking grey today.',
-    [WeatherState.Snow]: 'Time for a snowball fight! {city} is covered in snow.',
-    /*   [WeatherState.Drizzle]:
-        "It's a bit drizzly in {city}. Maybe grab a light raincoat?",
-      [WeatherState.Thunderstorm]:
-        'Stay indoors! A thunderstorm is raging over {city}.',
-      [WeatherState.Mist]: 'A misty day in {city}. Drive carefully!',
-      [WeatherState.Smoke]: 'Smoky skies over {city}. Stay indoors if possible.',
-      [WeatherState.Haze]:
-        '{city} is looking hazy today. Avoid outdoor activities.',
-      [WeatherState.Dust]: 'Dust storms in {city}. Keep your windows closed!',
-      [WeatherState.Fog]: 'Thick fog in {city}. Visibility is low!',
-      [WeatherState.Sand]: 'A sandy breeze is blowing through {city}.',
-      [WeatherState.Ash]: 'Volcanic ash detected near {city}. Take precautions!',
-      [WeatherState.Squall]: 'Strong winds in {city}. Hold onto your hat!',
-      [WeatherState.Tornado]: 'Tornado warning for {city}! Stay safe!', */
+    [WeatherState.Clear]: "Get your sunnies on. {city} is looking rather great today.",
+    [WeatherState.Rain]: "Don't forget your umbrella. It's wet in {city} today.",
+    [WeatherState.Clouds]: "Light a fire and get cosy. {city} is looking grey today.",
+    [WeatherState.Snow]: "Time for a snowball fight! {city} is covered in snow."
 };
 // Function to render and Icoon and text `iconText-container`
 export const renderWeatherIconAndText = (fetchWeatherData) => {
     // Get the container where we will append the new weather card
     // Debugging
-    if (elements.iconTextContainer = null) {
+    if (elements.iconTextContainer === null) {
         //handleErrorMessage
         console.error('iconText-container not found in the DOM!');
         throw Error;
@@ -218,25 +201,23 @@ const renderForecast = (city) => {
     }
     forecastContainer.innerHTML = "";
     console.log(`🔍 Fetching forecast data for: ${city}`);
-    // Hämta prognosdata
     fetchForecastData(city)
         .then((forecastData) => {
         console.log("✅ API Response:", forecastData);
-        // Om datan är tom, logga en varning
         if (!forecastData.length) {
             console.warn(`⚠️ No forecast data available for ${city}`);
             forecastContainer.innerHTML = `<p>No forecast available for ${city}.</p>`;
             return;
         }
         forecastData.forEach((day) => {
-            console.log(`📅 Forecast for ${day.date}: ${day.temperature}°C`);
+            const dayName = new Date(day.date + "T00:00:00Z").toLocaleDateString('en-EN', { weekday: 'short' }); // CHANGED: Ensures valid Date object
             const row = document.createElement("div");
             row.classList.add("forecast-row");
             row.innerHTML = `
-          <span class="day">${new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short' }).toLowerCase()}</span>
+          <span class="day">${dayName}</span>
           <span class="temp">${day.temperature}°</span>
         `;
-            forecastContainer?.appendChild(row);
+            forecastContainer.appendChild(row);
         });
     })
         .catch((error) => {
@@ -249,71 +230,78 @@ const DEFAULT_CITY = 'Stockholm';
 // Event handler for search form submission
 const handleSearch = async (event) => {
     event.preventDefault();
-    const city = elements.searchInput.value.trim();
+    /*const city = elements.searchInput.value.trim();
     const searchCity = city || DEFAULT_CITY;
+    
     // Update debug info
-    if (elements.lastSearched)
-        elements.lastSearched.textContent = searchCity;
-    if (elements.lastSearched)
-        elements.searchStatus.textContent = 'Searching...';
+    if (elements.lastSearched) elements.lastSearched.textContent = searchCity;
+    if (elements.lastSearched) elements.searchStatus.textContent = 'Searching...';*/
+    const city = elements.searchInput?.value.trim() || DEFAULT_CITY;
     try {
-        // Fetch weather data
-        const weatherData = await fetchWeatherData(searchCity);
-        // Update debug info
-        if (elements.searchStatus)
-            elements.searchStatus.textContent = 'Success!';
-        // Display basic weather info
+        // Fetch both weather and forecast data
+        const [weatherData, forecastData] = await Promise.all([
+            fetchWeatherData(city),
+            fetchForecastData(city)
+        ]);
+        // Get weather state from weather description
+        const weatherMain = weatherData.weatherDescription.split(' ')[0];
+        const weatherState = weatherMain === 'clear' ? WeatherState.Clear :
+            weatherMain === 'rain' ? WeatherState.Rain :
+                weatherMain === 'snow' ? WeatherState.Snow :
+                    WeatherState.Clouds;
+        // Update today's weather
         if (elements.todaysWeatherContainer) {
-            elements.todaysWeatherContainer.textContent = `${weatherData.cityName}, ${weatherData.temperature}°C, ${weatherData.weatherDescription}`;
+            elements.todaysWeatherContainer.innerHTML = `
+                <p>${weatherState} | ${weatherData.temperature}°C</p>
+                <p>sunrise ${weatherData.sunrise}</p>
+                <p>sunset ${weatherData.sunset}</p>
+            `;
+        }
+        // Update icon and text
+        if (elements.iconTextContainer) {
+            elements.iconTextContainer.innerHTML = ''; // Clear previous content
+            const message = catchyTextTemplate[weatherState].replace('{city}', weatherData.cityName);
+            const iconUrl = `Assets/weather_icons/${weatherState}.svg`;
+            elements.iconTextContainer.innerHTML = `
+                <img src="${iconUrl}" alt="${weatherState}" class="weather-icon">
+                <p>${message}</p>
+            `;
+        }
+        // Update forecast
+        const forecastContainer = document.getElementById("forecast-container");
+        if (forecastContainer) {
+            forecastContainer.innerHTML = ''; // Clear previous content
+            forecastData.forEach((day) => {
+                const row = document.createElement("div");
+                row.classList.add("forecast-row");
+                const dayName = new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short' });
+                row.innerHTML = `
+                    <span class="day">${dayName}</span>
+                    <span class="temp">${day.temperature}°C</span>
+                `;
+                forecastContainer.appendChild(row);
+            });
         }
     }
     catch (error) {
         console.error('Error fetching weather data:', error);
-        // Update debug info
-        if (elements.searchStatus)
-            elements.searchStatus.textContent = 'Error!';
         if (elements.todaysWeatherContainer) {
             elements.todaysWeatherContainer.textContent = 'Error loading weather data';
         }
     }
 };
-// Initialize search functionality
+// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
-    if (!elements.searchForm || !elements.searchInput) {
-        console.error('Search form elements not found');
+    if (!elements.searchForm) {
+        console.error('Search form not found');
         return;
     }
-    // Add event listener for form submission
     elements.searchForm.addEventListener('submit', handleSearch);
     // Trigger initial search for default city
     handleSearch(new Event('submit'));
 });
-const createCardWeather = (today, data, apiResponse, city) => {
-    // Hämta HTML-innehållet från funktionerna
-    const todaysWeatherHTML = displayTodaysWeather(today, data);
-    const iconAndTextHTML = renderWeatherIconAndText(apiResponse);
-    const forecastHTML = renderForecast(city);
-    // Sätt samman innehållet
-    const cardContent = `
-    <div class="todays-weather">${todaysWeatherHTML}</div>
-    <div class="icon-and-text">${iconAndTextHTML}</div>
-    <div class="forecast">${forecastHTML}</div>
-  `;
-    // Kontrollera att containern existerar
-    if (elements.weatherContainerChild === null) {
-        console.error('Cannot create new weather card!');
-        throw new Error('Cannot create new weather card!');
-    }
-    else {
-        // Skapa ett nytt div-element och lägg till HTML
-        const cardElement = document.createElement("div");
-        cardElement.innerHTML = cardContent;
-        // Lägg in kortet i container
-        elements.weatherContainerChild.appendChild(cardElement);
-    }
-};
 // **ADDED MISSING FUNCTION CALL FOR INITIAL WEATHER DISPLAY** // ADDED
-createCardWeather(new Date(), { weather: { cityName: DEFAULT_CITY, temperature: 0, weatherDescription: '', weatherId: 0, sunrise: '', sunset: '' }, forecast: [] }, {}, DEFAULT_CITY);
+// createCardWeather(new Date(), { weather: { cityName: DEFAULT_CITY, temperature: 0, weatherDescription: '', weatherId: 0, sunrise: '', sunset: '' }, forecast: [] }, {}, DEFAULT_CITY);
 /*
 // Function to update the weather display
 const updateWeatherDisplay = async (city: string): Promise<void> => {
