@@ -47,7 +47,7 @@ const renderWeatherInfo = (apiResponse: any): void => {
   // Get the container where we will append the new weather card
   const iconTextContainer = document.getElementById('iconText-container');
 
-  // Ensure the container exists before proceeding
+  // Debugging
   if (!iconTextContainer) {
     console.error('iconText-container not found in the DOM!');
     return;
@@ -63,10 +63,10 @@ const renderWeatherInfo = (apiResponse: any): void => {
   ) {
     validWeatherState = weatherStateString as WeatherState;
   } else {
-    validWeatherState = WeatherState.Clear;
+    validWeatherState = WeatherState.Clear; //Om det inte finns något väder eller om det inte passar någon av vår enums värde blir det Clear.
   }
 
-  // Get the city name from API response (default to "your location" if missing)
+  // Get the city name from API response (if no name = "your location")
   const cityName: string = apiResponse.name || 'your location';
 
   // Replace {city} with the actual city name in catchy text
@@ -77,7 +77,7 @@ const renderWeatherInfo = (apiResponse: any): void => {
 
   // Get the weather icon URL from OpenWeatherMap
   const iconCode = apiResponse.weather[0].icon;
-  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  const iconUrl = `Assets/weather_icons/${validWeatherState}.svg`;
 
   // Create a new div for the weather card
   const weatherCard = document.createElement('div');
