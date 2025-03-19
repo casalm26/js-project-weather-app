@@ -13,56 +13,25 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 
-<body class="rain">
+<body class="clear">
   <div class="container">
 
     <div id="todays-weather-container" class="todays-weather">
-      <div class="todays-weather-child" id="todays-weather-child">Clear | 23*
-      </div> <!-- DD -->
-      <div class="todays-weather-child" id="todays-weather-child">Sunrise 0800</div> <!-- DD -->
-      <div class="todays-weather-child" id="todays-weather-child">Sunset 22:30</div> <!-- DD -->
+      <div class="todays-weather-child">Clear | 23°</div> <!-- FIXED: Removed duplicate id -->
+      <div class="todays-weather-child">Sunrise 08:00</div> <!-- FIXED: Removed duplicate id -->
+      <div class="todays-weather-child">Sunset 22:30</div> <!-- FIXED: Removed duplicate id -->
     </div>
 
-    <!-- Icon and Text display OBS!!!!! Casandras kod behöver plocka ut icon-text-container istället för weather-container-->
-    <section id="icon-text">
-      <span class="material-symbols-outlined">
-        cloud
-      </span>
-      <!-- <img src="./Assests/weather_icons/Clouds.svg" alt="weather-icon" class="icon">DENNA MÅSTE BLI EN SPAN SOM FÅR EN VISS KLASS OCH ETT VISST VÄDER INUTI SIG -->
-      <h1 class="text">Get your sunnies on. Stockholm is looking rather great today. </h1> <!-- DD -->
+    <!-- Fixed Icon and Text display section -->
+    <section id="iconText-container"> <!-- CHANGED: Fixed id to match JS -->
+      <span class="weather-icon"></span> <!-- ADDED: Placeholder for the icon -->
+      <h1 id="catchyMessage"></h1> <!-- ADDED: Placeholder for the catchy text -->
     </section>
 
     <section id="forecast-container" class="forecast">
       <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
-      <div class="forecast-row">
-        <span class="day">mån</span>
-        <span class="temp">23</span>
-      </div><!-- DD -->
+      </div>
     </section>
-
 
     <div id="search">
       <form id="search-form" class="search-form">

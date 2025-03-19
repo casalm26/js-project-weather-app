@@ -1,3 +1,4 @@
+"use strict";
 //import "./forecast";  // Importera utan att exportera något
 //import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
 // Function to get DOM elements by ID
@@ -29,10 +30,13 @@ var WeatherState;
 ;
 ;
 ;
+// GLOBAL VARIABLES
+// Get the city name from API response (if no name = "your location")
+const cityName = fetchWeatherData.name || 'your location';
 // Use a hardcoded API key for now (you should move this to a secure configuration later)
 const API_KEY = '081d5769835e0277d80d7efa7aca13c6'; // Replace with your actual API key
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
-export function fetchWeatherData(city) {
+function fetchWeatherData(city) {
     return fetch(`${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`)
         .then(response => {
         if (!response.ok) {
@@ -62,7 +66,7 @@ export function fetchWeatherData(city) {
     });
 }
 ;
-export function fetchForecastData(city) {
+function fetchForecastData(city) {
     return fetch(`${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`)
         .then(response => {
         if (!response.ok) {
@@ -154,47 +158,34 @@ const catchyTextTemplate = {
     [WeatherState.Clouds]: "Light a fire and get cosy. {city} is looking grey today.",
     [WeatherState.Snow]: "Time for a snowball fight! {city} is covered in snow."
 };
-// Function to render and Icoon and text `iconText-container`
-export const renderWeatherIconAndText = (fetchWeatherData) => {
-    // Get the container where we will append the new weather card
-    // Debugging
-    if (elements.iconTextContainer === null) {
-        //handleErrorMessage
-        console.error('iconText-container not found in the DOM!');
-        throw Error;
-    }
-    // Extract the weather state from API response
-    const weatherStateString = fetchWeatherData.weather[0].main;
-    // Ensure the condition is a valid WeatherState or default to "Clear"
-    let validWeatherState;
-    if (Object.values(WeatherState).includes(weatherStateString)) {
-        validWeatherState = weatherStateString;
-    }
-    else {
-        validWeatherState = WeatherState.Clear;
-    }
-    // Get the city name from API response (if no name = "your location")
-    const cityName = fetchWeatherData.name || 'your location';
-    // Replace {city} with the actual city name in catchy text
-    const message = catchyTextTemplate[validWeatherState].replace('{city}', cityName);
-    // Get the weather icon URL from OpenWeatherMap
-    const iconUrl = `Assets/weather_icons/${validWeatherState}.svg`;
-    // Create a new div for the weather card
-    const weatherCard = document.createElement('div');
-    weatherCard.classList.add('weather-card'); // Optional class for styling
-    weatherCard.innerHTML = `
-        <img src="${iconUrl}" alt="${validWeatherState}">
-        <p>${message}</p>
-    `;
-    // Append the new weather card inside the `iconText-container`
-    if (elements.iconTextContainer === null) {
-        //handleErrorMessage()
+// Function to render and Icon and text `iconText-container`
+const renderWeatherIconAndText = (weatherData) => {
+    if (!elements.iconTextContainer) {
         console.error('iconText-container not found in the DOM!');
         throw new Error('iconText-container not found in the DOM!');
     }
-    else {
-        elements.iconTextContainer.appendChild(weatherCard);
-    }
+    // Extract weather state from API response
+    const weatherStateString = weatherData.weather[0].main;
+    // Ensure the condition is a valid WeatherState or default to "Clear"
+    const validWeatherState = Object.values(WeatherState).includes(weatherStateString)
+        ? weatherStateString
+        : WeatherState.Clear;
+    // Correct city name replacement
+    const cityName = weatherData.name || 'your location';
+    const messageTemplate = catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!";
+    const message = messageTemplate.replace('{city}', cityName); // FIXED
+    // Get the weather icon URL
+    const iconUrl = `Assets/weather_icons/${validWeatherState}.svg`;
+    // Create a div for the weather icon and text
+    const iconTextDiv = document.createElement('div');
+    iconTextDiv.classList.add('icon-text');
+    iconTextDiv.innerHTML = `
+      <img src="${iconUrl}" alt="${validWeatherState}" class="weather-icon">
+      <h1>${message}</h1>
+  `;
+    // Append the new weather card inside the `iconText-container`
+    elements.iconTextContainer.innerHTML = ''; // Clear previous content
+    elements.iconTextContainer.appendChild(iconTextDiv); // FIXED
 };
 // FORECAST
 const renderForecast = (city) => {
@@ -279,7 +270,7 @@ const handleSearch = async (event) => {
             const iconUrl = `Assets/weather_icons/${weatherState}.svg`;
             elements.iconTextContainer.innerHTML = `
                 <img src="${iconUrl}" alt="${weatherState}" class="weather-icon">
-                <p>${message}</p>
+                <h1>${message}</h1>
             `;
         }
         // Update forecast
