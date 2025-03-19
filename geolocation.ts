@@ -106,7 +106,7 @@ const handleErrorMessages = (error: string) => {
 /////////////////////////////////////////// STARTS HERE
 
 // Function to check for geolocation support
-const checkGeolocationSupport = () => {
+export const checkGeolocationSupport = () => {
   console.log("Checking geolocation support...")
   if (navigator.geolocation) {
     return (supportsGeolocation = true)

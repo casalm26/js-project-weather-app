@@ -61,7 +61,7 @@ export interface ProcessedForecastData {
 };
 
 // Use a hardcoded API key for now (you should move this to a secure configuration later)
-const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
+const API_KEY = '081d5769835e0277d80d7efa7aca13c6'; // Replace with your actual API key
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 export function fetchWeatherData(city: string): Promise<ProcessedWeatherData> {
