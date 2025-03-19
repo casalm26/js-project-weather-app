@@ -43,7 +43,7 @@ const catchyTextTemplate: Record<WeatherState, string> = {
 };
 
 // Function to get weatherinfo fron API respons and append it to `iconText-container`
-export const renderWeatherInfo = (apiResponse: any): void => {
+export const renderWeatherIconAndText = (apiResponse: any): void => {
   // Get the container where we will append the new weather card
   const iconTextContainer = document.getElementById('iconText-container');
 
@@ -105,7 +105,7 @@ const loadDummyData = async (): Promise<void> => {
       .map((line) => JSON.parse(line));
 
     // Render weather info for **each** object in the file
-    jsonObjects.forEach(renderWeatherInfo);
+    jsonObjects.forEach(renderWeatherIconAndText);
   } catch (error) {
     console.error('Error loading dummy data:', error);
   }
