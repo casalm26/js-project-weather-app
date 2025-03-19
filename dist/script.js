@@ -72,18 +72,22 @@ export function fetchForecastData(city) {
     })
         .then((data) => {
         const processedForecasts = new Map();
+        // Get today's and tomorrow's dates for comparison
+        const today = new Date();
+        const todayString = today.toISOString().split("T")[0]; // YYYY-MM-DD
         data.list.forEach(item => {
-            const date = new Date(item.dt * 1000).toISOString().split("T")[0]; // CHANGED: Store in ISO format (YYYY-MM-DD)
-            if (!processedForecasts.has(date)) {
+            const date = new Date(item.dt * 1000).toISOString().split("T")[0]; // YYYY-MM-DD
+            // Ignore today's forecasts, start from tomorrow
+            if (date > todayString && !processedForecasts.has(date)) {
                 processedForecasts.set(date, {
-                    date: date, // Store as ISO format
+                    date: date, // Store in ISO format (YYYY-MM-DD)
                     temperature: Math.round(item.main.temp),
                     weatherDescription: item.weather[0].description,
                     weatherId: item.weather[0].id,
                 });
             }
         });
-        return Array.from(processedForecasts.values()).slice(0, 4);
+        return Array.from(processedForecasts.values()).slice(0, 4); // Ensure only 4 future days
     })
         .catch(error => {
         console.error('Error fetching forecast data:', error);
@@ -209,12 +213,23 @@ const renderForecast = (city) => {
             forecastContainer.innerHTML = `<p>No forecast available for ${city}.</p>`;
             return;
         }
-        forecastData.forEach((day) => {
-            const dayName = new Date(day.date + "T00:00:00Z").toLocaleDateString('en-EN', { weekday: 'short' }); // CHANGED: Ensures valid Date object
+        // Get tomorrow's date for comparison
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowString = tomorrow.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+        forecastData.forEach((day, index) => {
+            let displayDate;
+            if (index === 0) {
+                displayDate = "Tomorrow"; // CHANGED: First day is "Tomorrow"
+            }
+            else {
+                const dateObj = new Date(day.date + "T00:00:00Z");
+                displayDate = dateObj.toLocaleDateString('en-GB'); // CHANGED: DD/MM format
+            }
             const row = document.createElement("div");
             row.classList.add("forecast-row");
             row.innerHTML = `
-          <span class="day">${dayName}</span>
+          <span class="day">${displayDate}</span>
           <span class="temp">${day.temperature}°</span>
         `;
             forecastContainer.appendChild(row);
@@ -274,7 +289,7 @@ const handleSearch = async (event) => {
             forecastData.forEach((day) => {
                 const row = document.createElement("div");
                 row.classList.add("forecast-row");
-                const dayName = new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short' });
+                const dayName = new Date(day.date).toLocaleDateString('en-GB', { weekday: 'short' });
                 row.innerHTML = `
                     <span class="day">${dayName}</span>
                     <span class="temp">${day.temperature}°C</span>
