@@ -1,6 +1,14 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
-const API_KEY = process.env.API_KEY;
+;
+;
+;
+;
+;
+;
+;
+;
+const API_KEY = "081d5769835e0277d80d7efa7aca13c6";
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 export function fetchWeatherData(city) {
     return fetch(`${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`)
@@ -31,6 +39,7 @@ export function fetchWeatherData(city) {
         throw error;
     });
 }
+;
 export function fetchForecastData(city) {
     return fetch(`${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`)
         .then((response) => {
@@ -62,3 +71,4 @@ export function fetchForecastData(city) {
         throw error;
     });
 }
+;

@@ -9,10 +9,33 @@
   <body>
     <div id="search"></div>
     <section id="weather-container">
-        <div class="weather-container-child" id="todays-weather-container"></div>
+       <!-- <div class="weather-container-child" id="todays-weather-container"></div>-->
         <div class="weather-container-child" id="iconText-containe"></div>
         <div class="weather-container-child" id="forecast-container"></div>
     </section>
-  </body>
+    <div class="container">
+      <form id="search-form" class="search-form">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Enter city name..."
+          aria-label="Search for a city"
+        >
+        <button type="submit">Search</button>
+      </form>
+
+      <!-- Weather display -->
+      <div id="todays-weather-container"></div>
+
+      <!-- Debug info -->
+      <div class="debug-info">
+        <p>Last searched city: <span id="last-searched">-</span></p>
+        <p>Search status: <span id="search-status">-</span></p>
+      </div>
+    </div>
+    
+    <!-- Import both script files -->
+    <script type="module" src="dist/search.js"></script>
     <script type="module" src="dist/script.js"></script>
+  </body>
 </html>
