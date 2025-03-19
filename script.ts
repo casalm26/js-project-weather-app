@@ -11,15 +11,6 @@ const elements = {
   todaysWeatherContainer: getElement("todays-weather-container")
 }
 
-import {
-  ProcessedWeatherData,
-  ProcessedForecastData,
-  fetchWeatherData,
-  fetchForecastData
-} from "./fetchWeather.js"
-
-import { ProcessedWeatherData, ProcessedForecastData, fetchWeatherData, fetchForecastData } from './fetchWeather.js';
-
 interface WeatherCardData {
   weather: ProcessedWeatherData
   forecast: ProcessedForecastData[]
@@ -40,7 +31,7 @@ let currentWeatherState: string = ""
 
 // FUNCTIONS
 
-const checkWeatherState = (filter: WeatherState): void => {
+const checkWeatherState = (filter: WeatherState): string => {
   if (filter === WeatherState.Clear) {
     currentWeatherState = WeatherState.Clear
   } else if (filter === WeatherState.Clouds) {
@@ -50,15 +41,21 @@ const checkWeatherState = (filter: WeatherState): void => {
   } else if (filter === WeatherState.Snow) {
     currentWeatherState = WeatherState.Snow
   }
+  return currentWeatherState
 };
 
-/*const displayTodaysWeather = (today: Date, data: WeatherCardData) => {
+/* const displayTodaysWeather = (today: Date, data: WeatherCardData) => {
   // Mapping to today is missing
   const { weather } = data
+  if(!todaysWeatherContainer) {
+    handleErrorMessages(error)
+    return
+  } else {
   elements.todaysWeatherContainer.innerHTML = `<p>${currentWeatherState} | ${weather.temperature}</p>
   <p>Sunrise: ${weather.sunrise}</p>
   <p>Sunset: ${weather.sunset}</p>`
-};*/
+  }
+}; */
 
 /*const createWeatherCard = (data: WeatherCardData): string => {
   const { weather, forecast } = data
@@ -117,6 +114,7 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
     }
   } catch (error) {
     console.error("Error updating weather display:", error)
+    handleErrorMessages(error)
     if (elements.weatherContainer) {
       elements.weatherContainer.innerHTML =
         "<p>Error loading weather data. Please try again.</p>"
@@ -128,4 +126,4 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
 document.addEventListener('DOMContentLoaded', () => {
   updateWeatherDisplay('London');
 })
-;
+;*/
