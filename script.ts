@@ -18,10 +18,10 @@ interface WeatherCardData {
 
 // ENUMS
 enum WeatherState {
-  Clear = "clear",
-  Clouds = "clouds",
-  Rain = "rain",
-  Snow = "snow"
+  Clear = "Clear",
+  Clouds = "Clouds",
+  Rain = "Rain",
+  Snow = "Snow"
 }
 
 // GLOBAL VARIABLES

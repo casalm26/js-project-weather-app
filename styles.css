@@ -1,0 +1,31 @@
+.weather-container {
+  width: 100%;
+}
+
+.todays-weather-container {
+  width: 100%;
+
+}
+
+.iconText-container {
+  width: 100%;
+
+}
+
+.forecast-container {
+  width: 100%;
+}
+
+/* Search container styles */
+/* BYTA NAMN?*/
+.container {
+  width: 100%;
+}
+
+.search-form {
+  width: 100%;
+}
+
+.container button {
+  width: 100%;
+}
