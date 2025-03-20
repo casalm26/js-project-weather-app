@@ -46,8 +46,8 @@ body {
   line-height: 1.3;
 }
 
-.material-symbols-outlined {
-  font-variation-settings: 'opsz' 64;
+img {
+  height: 52px;
 }
 
 h1 {
