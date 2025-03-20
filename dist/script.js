@@ -9,10 +9,10 @@ const elements = {
     weatherContainerChild: getElement("weather-container-child"),
     todaysWeatherContainer: getElement("todays-weather-container"),
     iconTextContainer: getElement("iconText-container"),
-    searchForm: document.getElementById('search-form'),
-    searchInput: document.getElementById('search-input'),
-    lastSearched: document.getElementById('last-searched'),
-    searchStatus: document.getElementById('search-status'),
+    searchForm: document.getElementById("search-form"),
+    searchInput: document.getElementById("search-input"),
+    lastSearched: document.getElementById("last-searched"),
+    searchStatus: document.getElementById("search-status")
 };
 // ENUMS
 var WeatherState;
@@ -22,33 +22,25 @@ var WeatherState;
     WeatherState["Rain"] = "Rain";
     WeatherState["Snow"] = "Snow";
 })(WeatherState || (WeatherState = {}));
-;
-;
-;
-;
-;
-;
-;
-;
 // GLOBAL VARIABLES
 // Get the city name from API response (if no name = "your location")
-const cityName = fetchWeatherData.name || 'your location';
+const cityName = fetchWeatherData.name || "your location";
 // Use a hardcoded API key for now (you should move this to a secure configuration later)
-const API_KEY = '081d5769835e0277d80d7efa7aca13c6'; // Replace with your actual API key
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const API_KEY = "081d5769835e0277d80d7efa7aca13c6"; // Replace with your actual API key
+const BASE_URL = "https://api.openweathermap.org/data/2.5";
 function fetchWeatherData(city) {
     return fetch(`${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`)
-        .then(response => {
+        .then((response) => {
         if (!response.ok) {
-            throw new Error('Weather data fetch failed');
+            throw new Error("Weather data fetch failed");
         }
         return response.json();
     })
         .then((data) => {
         const formatTime = (timestamp) => {
-            return new Date(timestamp * 1000).toLocaleTimeString('sv-SE', {
-                hour: '2-digit',
-                minute: '2-digit',
+            return new Date(timestamp * 1000).toLocaleTimeString("sv-SE", {
+                hour: "2-digit",
+                minute: "2-digit"
             });
         };
         return {
@@ -57,20 +49,19 @@ function fetchWeatherData(city) {
             weatherDescription: data.weather[0].description,
             weatherId: data.weather[0].id,
             sunrise: formatTime(data.sys.sunrise),
-            sunset: formatTime(data.sys.sunset),
+            sunset: formatTime(data.sys.sunset)
         };
     })
-        .catch(error => {
-        console.error('Error fetching weather data:', error);
+        .catch((error) => {
+        console.error("Error fetching weather data:", error);
         throw error;
     });
 }
-;
 function fetchForecastData(city) {
     return fetch(`${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`)
-        .then(response => {
+        .then((response) => {
         if (!response.ok) {
-            throw new Error('Forecast data fetch failed');
+            throw new Error("Forecast data fetch failed");
         }
         return response.json();
     })
@@ -79,7 +70,7 @@ function fetchForecastData(city) {
         // Get today's and tomorrow's dates for comparison
         const today = new Date();
         const todayString = today.toISOString().split("T")[0]; // YYYY-MM-DD
-        data.list.forEach(item => {
+        data.list.forEach((item) => {
             const date = new Date(item.dt * 1000).toISOString().split("T")[0]; // YYYY-MM-DD
             // Ignore today's forecasts, start from tomorrow
             if (date > todayString && !processedForecasts.has(date)) {
@@ -87,18 +78,17 @@ function fetchForecastData(city) {
                     date: date, // Store in ISO format (YYYY-MM-DD)
                     temperature: Math.round(item.main.temp),
                     weatherDescription: item.weather[0].description,
-                    weatherId: item.weather[0].id,
+                    weatherId: item.weather[0].id
                 });
             }
         });
         return Array.from(processedForecasts.values()).slice(0, 4); // Ensure only 4 future days
     })
-        .catch(error => {
-        console.error('Error fetching forecast data:', error);
+        .catch((error) => {
+        console.error("Error fetching forecast data:", error);
         throw error;
     });
 }
-;
 // Define WeatherState as an Enum - Redan gjort i mindre skala, längre upp
 /*enum WeatherState {
   Clear = 'Clear',
@@ -134,8 +124,34 @@ const checkWeatherState = (filter) => {
     else if (filter === WeatherState.Snow) {
         weatherDescription = WeatherState.Snow;
     }
-    return "Rain";
+    // Uppdatera body-klassen med rätt väderklass
+    updateBodyClass(weatherDescription);
+    return weatherDescription;
 };
+/* const changeBodyClass = (weatherDescription: string): void => {
+  const body = document.body
+  if (body === null) {
+    return
+  } else if (weatherDescription === WeatherState.Clear) {
+    body.classList.add("clear")
+  } else if (weatherDescription === WeatherState.Clouds) {
+    body.classList.add("clouds")
+  } else if (weatherDescription === WeatherState.Rain) {
+    body.classList.add("rain")
+  } else if (weatherDescription === WeatherState.Snow) {
+    body.classList.add("snowy")
+  }
+} */
+function updateBodyClass(weatherState) {
+    const body = document.body;
+    const validClasses = ["clear", "rain", "clouds", "snow"];
+    // Ta bort gamla väderklasser
+    body.classList.remove(...validClasses);
+    // Lägg till den nya klassen om den är giltig
+    if (validClasses.includes(weatherState)) {
+        body.classList.add(weatherState);
+    }
+}
 // handleErrorMessages
 const displayTodaysWeather = (today, data) => {
     // Mapping to today is missing
@@ -160,8 +176,8 @@ const catchyTextTemplate = {
 // Function to render and Icon and text `iconText-container`
 const renderWeatherIconAndText = (weatherData) => {
     if (!elements.iconTextContainer) {
-        console.error('iconText-container not found in the DOM!');
-        throw new Error('iconText-container not found in the DOM!');
+        console.error("iconText-container not found in the DOM!");
+        throw new Error("iconText-container not found in the DOM!");
     }
     // Extract weather state from API response
     const weatherStateString = weatherData.weather[0].main;
@@ -170,21 +186,20 @@ const renderWeatherIconAndText = (weatherData) => {
         ? weatherStateString
         : WeatherState.Clear;
     // Correct city name replacement
-    const cityName = weatherData.name || 'your location';
+    const cityName = weatherData.name || "your location";
     const messageTemplate = catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!";
-    const message = messageTemplate.replace('{city}', cityName); // FIXED
+    const message = messageTemplate.replace("{city}", cityName); // FIXED
     // Get the weather icon URL
-    const iconUrl = `/Assets/${validWeatherState}.png`;
+    const iconUrl = `Assests/${validWeatherState}.png`;
     // Create a div for the weather icon and text
-    const iconTextDiv = document.createElement('div');
-    iconTextDiv.classList.add('icon-text');
+    const iconTextDiv = document.createElement("div");
+    iconTextDiv.classList.add("icon-text");
     iconTextDiv.innerHTML = `
       <img src="${iconUrl}" alt="${validWeatherState}" class="weather-icon">
-      <span>HEJ</span>
-      <h1>HELLOOOO${message}</h1>
+      <h1>${message}</h1>
   `;
     // Append the new weather card inside the `iconText-container`
-    elements.iconTextContainer.innerHTML = ''; // Clear previous content
+    elements.iconTextContainer.innerHTML = ""; // Clear previous content
     elements.iconTextContainer.appendChild(iconTextDiv); // FIXED
 };
 // FORECAST
@@ -215,7 +230,7 @@ const renderForecast = (city) => {
             }
             else {
                 const dateObj = new Date(day.date + "T00:00:00Z");
-                displayDate = dateObj.toLocaleDateString('en-GB'); // CHANGED: DD/MM format
+                displayDate = dateObj.toLocaleDateString("en-GB"); // CHANGED: DD/MM format
             }
             const row = document.createElement("div");
             row.classList.add("forecast-row");
@@ -232,29 +247,33 @@ const renderForecast = (city) => {
 };
 // SEARCH
 // Default city if no search is performed
-const DEFAULT_CITY = 'Stockholm';
+const DEFAULT_CITY = "Stockholm";
 // Event handler for search form submission
 const handleSearch = async (event) => {
     event.preventDefault();
     /*const city = elements.searchInput.value.trim();
-    const searchCity = city || DEFAULT_CITY;
-    
-    // Update debug info
-    if (elements.lastSearched) elements.lastSearched.textContent = searchCity;
-    if (elements.lastSearched) elements.searchStatus.textContent = 'Searching...';*/
+      const searchCity = city || DEFAULT_CITY;
+      
+      // Update debug info
+      if (elements.lastSearched) elements.lastSearched.textContent = searchCity;
+      if (elements.lastSearched) elements.searchStatus.textContent = 'Searching...';*/
     const city = elements.searchInput?.value.trim() || DEFAULT_CITY;
     try {
         // Fetch both weather and forecast data
         const [weatherData, forecastData] = await Promise.all([
             fetchWeatherData(city),
-            fetchForecastData(city)
+            fetchForecastData(city),
         ]);
         // Get weather state from weather description
-        const weatherMain = weatherData.weatherDescription.split(' ')[0];
-        const weatherState = weatherMain === 'clear' ? WeatherState.Clear :
-            weatherMain === 'rain' ? WeatherState.Rain :
-                weatherMain === 'snow' ? WeatherState.Snow :
-                    WeatherState.Clouds;
+        const weatherMain = weatherData.weatherDescription.split(" ")[0];
+        const weatherState = weatherMain === "clear"
+            ? WeatherState.Clear
+            : weatherMain === "rain"
+                ? WeatherState.Rain
+                : weatherMain === "snow"
+                    ? WeatherState.Snow
+                    : WeatherState.Clouds;
+        updateBodyClass(weatherState);
         // Update today's weather
         if (elements.todaysWeatherContainer) {
             elements.todaysWeatherContainer.innerHTML = `
@@ -265,12 +284,9 @@ const handleSearch = async (event) => {
         }
         // Update icon and text
         if (elements.iconTextContainer) {
-            elements.iconTextContainer.innerHTML = ''; // Clear previous content
-            const message = catchyTextTemplate[weatherState].replace('{city}', weatherData.cityName);
-            const iconUrl = `/Assests/${weatherState}.png`;
-            console.log('message:', catchyTextTemplate);
-            console.log('IconURL:', iconUrl);
-            console.log("iconTextContainer:", elements.iconTextContainer);
+            elements.iconTextContainer.innerHTML = ""; // Clear previous content
+            const message = catchyTextTemplate[weatherState].replace("{city}", weatherData.cityName);
+            const iconUrl = `Assests/${weatherState}.png`;
             elements.iconTextContainer.innerHTML = `
                 <img src="${iconUrl}" alt="${weatherState}" class="weather-icon">
                 <h1>${message}</h1>
@@ -279,11 +295,13 @@ const handleSearch = async (event) => {
         // Update forecast
         const forecastContainer = document.getElementById("forecast-container");
         if (forecastContainer) {
-            forecastContainer.innerHTML = ''; // Clear previous content
+            forecastContainer.innerHTML = ""; // Clear previous content
             forecastData.forEach((day) => {
                 const row = document.createElement("div");
                 row.classList.add("forecast-row");
-                const dayName = new Date(day.date).toLocaleDateString('en-GB', { weekday: 'short' });
+                const dayName = new Date(day.date).toLocaleDateString("en-GB", {
+                    weekday: "short"
+                });
                 row.innerHTML = `
                     <span class="day">${dayName}</span>
                     <span class="temp">${day.temperature}°C</span>
@@ -293,21 +311,21 @@ const handleSearch = async (event) => {
         }
     }
     catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error("Error fetching weather data:", error);
         if (elements.todaysWeatherContainer) {
-            elements.todaysWeatherContainer.textContent = 'Error loading weather data';
+            elements.todaysWeatherContainer.textContent = "Error loading weather data";
         }
     }
 };
 // Initialize the app
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     if (!elements.searchForm) {
-        console.error('Search form not found');
+        console.error("Search form not found");
         return;
     }
-    elements.searchForm.addEventListener('submit', handleSearch);
+    elements.searchForm.addEventListener("submit", handleSearch);
     // Trigger initial search for default city
-    handleSearch(new Event('submit'));
+    handleSearch(new Event("submit"));
 });
 // **ADDED MISSING FUNCTION CALL FOR INITIAL WEATHER DISPLAY** // ADDED
 // createCardWeather(new Date(), { weather: { cityName: DEFAULT_CITY, temperature: 0, weatherDescription: '', weatherId: 0, sunrise: '', sunset: '' }, forecast: [] }, {}, DEFAULT_CITY);
@@ -340,4 +358,4 @@ const updateWeatherDisplay = async (city: string): Promise<void> => {
 document.addEventListener('DOMContentLoaded', () => {
   updateWeatherDisplay('London');
 })
-;*/ 
+;*/

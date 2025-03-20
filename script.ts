@@ -283,7 +283,7 @@ const renderWeatherIconAndText = (weatherData: any): void => {
   const message = messageTemplate.replace("{city}", cityName) // FIXED
 
   // Get the weather icon URL
-  const iconUrl = `Assets/${validWeatherState}.svg`
+  const iconUrl = `Assests/${validWeatherState}.png`
 
   // Create a div for the weather icon and text
   const iconTextDiv = document.createElement("div")
@@ -374,8 +374,9 @@ const handleSearch = async (event: Event): Promise<void> => {
     // Fetch both weather and forecast data
     const [weatherData, forecastData] = await Promise.all([
       fetchWeatherData(city),
-      fetchForecastData(city)
-    ])
+      fetchForecastData(city),
+    ]);
+
 
     // Get weather state from weather description
     const weatherMain = weatherData.weatherDescription.split(" ")[0]
@@ -387,6 +388,8 @@ const handleSearch = async (event: Event): Promise<void> => {
         : weatherMain === "snow"
         ? WeatherState.Snow
         : WeatherState.Clouds
+
+      updateBodyClass(weatherState);
 
     // Update today's weather
     if (elements.todaysWeatherContainer) {
@@ -404,7 +407,7 @@ const handleSearch = async (event: Event): Promise<void> => {
         "{city}",
         weatherData.cityName
       )
-      const iconUrl = `Assets/weather_icons/${weatherState}.svg`
+      const iconUrl = `Assests/${weatherState}.png`
 
       elements.iconTextContainer.innerHTML = `
                 <img src="${iconUrl}" alt="${weatherState}" class="weather-icon">
