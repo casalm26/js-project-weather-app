@@ -10,23 +10,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 
 <body class="clear">
   <div class="container">
 
     <div id="todays-weather-container" class="todays-weather">
-      <div class="todays-weather-child">Clear | 23°</div> <!-- FIXED: Removed duplicate id -->
-      <div class="todays-weather-child">Sunrise 08:00</div> <!-- FIXED: Removed duplicate id -->
-      <div class="todays-weather-child">Sunset 22:30</div> <!-- FIXED: Removed duplicate id -->
     </div>
 
-    <!-- Fixed Icon and Text display section -->
-    <section id="iconText-container"> <!-- CHANGED: Fixed id to match JS -->
-      <!-- <span class="weather-icon"></span> ADDED: Placeholder for the icon -->
-      <h1 id="catchyMessage"></h1> <!-- ADDED: Placeholder for the catchy text -->
-    </section>
+    <section id="iconText-container"></section>
 
     <section id="forecast-container" class="forecast">
       <div class="forecast-row">
@@ -40,14 +32,6 @@
       </form>
     </div>
 
-    <!-- Debug info -->
-    <div class="debug-info">
-      <p>Last searched city: <span id="last-searched">-</span></p>
-      <p>Search status: <span id="search-status">-</span></p>
-    </div>
-  </div>
-
-  <!-- Import both script files -->
   <script type="module" src="dist/script.js"></script>
 </body>
 
