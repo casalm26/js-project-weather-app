@@ -150,7 +150,6 @@ const displayTodaysWeather = (today, data) => {
   <p>Sunset: ${weather.sunset}</p>`;
     }
 };
-//Bild och rolig text-funktion
 // Define catchyTextTemplate using city from API as a placeholder
 const catchyTextTemplate = {
     [WeatherState.Clear]: "Get your sunnies on. {city} is looking rather great today.",
@@ -175,7 +174,7 @@ const renderWeatherIconAndText = (weatherData) => {
     const messageTemplate = catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!";
     const message = messageTemplate.replace('{city}', cityName); // FIXED
     // Get the weather icon URL
-    const iconUrl = `Assets/weather_icons/${validWeatherState}.svg`;
+    const iconUrl = `Assets/${validWeatherState}.svg`;
     // Create a div for the weather icon and text
     const iconTextDiv = document.createElement('div');
     iconTextDiv.classList.add('icon-text');
