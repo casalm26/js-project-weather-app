@@ -301,11 +301,8 @@ const renderForecast = (city: string): void => {
 
   forecastContainer.innerHTML = ""
 
-  console.log(`🔍 Fetching forecast data for: ${city}`)
-
   fetchForecastData(city)
     .then((forecastData: ProcessedForecastData[]) => {
-      console.log("✅ API Response:", forecastData)
 
       if (!forecastData.length) {
         console.warn(`⚠️ No forecast data available for ${city}`)
