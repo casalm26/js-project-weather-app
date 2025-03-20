@@ -284,7 +284,7 @@ const renderWeatherIconAndText = (weatherData: any): void => {
 
   // Append the new weather card inside the `iconText-container`
   elements.iconTextContainer.innerHTML = "" // Clear previous content
-  elements.iconTextContainer.appendChild(iconTextDiv) // FIXED
+  elements.iconTextContainer.appendChild(iconTextDiv)
 }
 
 // FORECAST
@@ -295,7 +295,7 @@ const renderForecast = (city: string): void => {
   ) as HTMLElement
 
   if (!forecastContainer) {
-    console.warn("⚠️ forecastContainer not found in the DOM!")
+    console.warn("forecastContainer not found in the DOM!")
     return
   }
 
@@ -305,7 +305,7 @@ const renderForecast = (city: string): void => {
     .then((forecastData: ProcessedForecastData[]) => {
 
       if (!forecastData.length) {
-        console.warn(`⚠️ No forecast data available for ${city}`)
+        console.warn(`No forecast data available for ${city}`)
         forecastContainer.innerHTML = `<p>No forecast available for ${city}.</p>`
         return
       }
@@ -335,7 +335,7 @@ const renderForecast = (city: string): void => {
       })
     })
     .catch((error) => {
-      console.error("❌ Error fetching forecast data:", error)
+      console.error("Error fetching forecast data:", error)
     })
 }
 
