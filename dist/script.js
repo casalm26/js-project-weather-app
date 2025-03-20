@@ -46,7 +46,7 @@ function fetchWeatherData(city) {
         return {
             cityName: data.name,
             temperature: Math.round(data.main.temp),
-            weatherDescription: data.weather[0].description,
+            weatherDescription: data.weather[0].main,
             weatherId: data.weather[0].id,
             sunrise: formatTime(data.sys.sunrise),
             sunset: formatTime(data.sys.sunset)
@@ -128,28 +128,14 @@ const checkWeatherState = (filter) => {
     updateBodyClass(weatherDescription);
     return weatherDescription;
 };
-/* const changeBodyClass = (weatherDescription: string): void => {
-  const body = document.body
-  if (body === null) {
-    return
-  } else if (weatherDescription === WeatherState.Clear) {
-    body.classList.add("clear")
-  } else if (weatherDescription === WeatherState.Clouds) {
-    body.classList.add("clouds")
-  } else if (weatherDescription === WeatherState.Rain) {
-    body.classList.add("rain")
-  } else if (weatherDescription === WeatherState.Snow) {
-    body.classList.add("snowy")
-  }
-} */
 function updateBodyClass(weatherState) {
     const body = document.body;
     const validClasses = ["clear", "rain", "clouds", "snow"];
     // Ta bort gamla väderklasser
     body.classList.remove(...validClasses);
     // Lägg till den nya klassen om den är giltig
-    if (validClasses.includes(weatherState)) {
-        body.classList.add(weatherState);
+    if (validClasses.includes(weatherState.toLowerCase())) {
+        body.classList.add(weatherState.toLowerCase());
     }
 }
 // handleErrorMessages
@@ -188,7 +174,7 @@ const renderWeatherIconAndText = (weatherData) => {
     // Correct city name replacement
     const cityName = weatherData.name || "your location";
     const messageTemplate = catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!";
-    const message = messageTemplate.replace("{city}", cityName); // FIXED
+    const message = messageTemplate.replace("{city}", cityName);
     // Get the weather icon URL
     const iconUrl = `Assests/${validWeatherState}.png`;
     // Create a div for the weather icon and text
@@ -265,7 +251,7 @@ const handleSearch = async (event) => {
             fetchForecastData(city),
         ]);
         // Get weather state from weather description
-        const weatherMain = weatherData.weatherDescription.split(" ")[0];
+        const weatherMain = weatherData.weatherDescription.toLowerCase();
         const weatherState = weatherMain === "clear"
             ? WeatherState.Clear
             : weatherMain === "rain"

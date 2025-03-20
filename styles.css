@@ -14,18 +14,23 @@ body {
 }
 
 .clear {
-  background-color: #f7e9b9;
-  color: #2a5510;
+  background-color: #F7E9B9;
+  color: #2A5510;
 }
 
 .rain {
-  background-color: #bde8fa;
-  color: #164a68;
+  background-color: #BDE8FA;
+  color: #164A68;
 }
 
 .clouds {
-  background-color: #f9fdfe;
-  color: #f47775;
+  background-color: #F9FDFE;
+  color: #F47775;
+}
+
+.snow {
+  background-color: #F9FDFE;
+  color: #164A68;
 }
 
 .container {
@@ -42,12 +47,13 @@ body {
 }
 
 .material-symbols-outlined {
-  font-variation-settings: "opsz" 64;
+  font-variation-settings: 'opsz' 64;
 }
 
 h1 {
   font-size: 24px;
   font-weight: 700;
+  margin-top: 20px;
 }
 
 .forecast-row {
@@ -57,9 +63,6 @@ h1 {
   font-size: 16px;
   line-height: 36px;
 }
-
-/* Search container styles */
-/* BYTA NAMN?*/
 
 #search-form {
   display: flex;
@@ -76,18 +79,27 @@ h1 {
   border: none;
   font-size: 16px;
   width: 100%;
+  outline: 0;
+}
+
+#search-form input:focus {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .clear #search-form input {
-  border: 3px solid #2a5510;
+  border: 3px solid #2A5510;
 }
 
 .clouds #search-form input {
-  border: 3px solid #f47775;
+  border: 3px solid #F47775;
 }
 
 .rain #search-form input {
-  border: 3px solid #164a68;
+  border: 3px solid #164A68;
+}
+
+.snow #search-form input {
+  border: 3px solid #BDE8FA;
 }
 
 .container button {
@@ -101,18 +113,23 @@ h1 {
 }
 
 .clear button {
-  background: #2a5510;
+  background: #2A5510
 }
 
 .rain button {
-  background: #164a68;
+  background: #164A68;
 }
 
 .clouds button {
-  background: #f47775;
+  background: #F47775;
+}
+
+.snow button {
+  background: #BDE8FA;
 }
 
 @media (min-width: 414px) {
+
   .todays-weather {
     font-size: 21px;
   }
@@ -124,6 +141,7 @@ h1 {
   .forecast-row {
     font-size: 21px;
   }
+
 }
 
 @media (min-width: 760px) {

@@ -7,19 +7,14 @@ const getElement = (id: string): HTMLElement | null =>
 
 // DOM ELEMENTS
 const elements = {
-  weatherContainer: getElement("weather-container"),
-  weatherContainerChild: getElement("weather-container-child"),
+  weatherContainer: getElement("weather-container") as HTMLElement,
+  weatherContainerChild: getElement("weather-container-child") as HTMLElement,
   todaysWeatherContainer: getElement("todays-weather-container") as HTMLElement,
-  iconTextContainer: getElement("iconText-container"),
+  iconTextContainer: getElement("iconText-container") as HTMLElement,
   searchForm: document.getElementById("search-form") as HTMLFormElement,
   searchInput: document.getElementById("search-input") as HTMLInputElement,
   lastSearched: document.getElementById("last-searched") as HTMLSpanElement,
   searchStatus: document.getElementById("search-status") as HTMLSpanElement
-}
-
-interface WeatherCardData {
-  weather: ProcessedWeatherData
-  forecast: ProcessedForecastData[]
 }
 
 // ENUMS
@@ -28,6 +23,11 @@ enum WeatherState {
   Clouds = "Clouds",
   Rain = "Rain",
   Snow = "Snow"
+}
+
+interface WeatherCardData {
+  weather: ProcessedWeatherData
+  forecast: ProcessedForecastData[]
 }
 
 interface WeatherCondition {
@@ -98,6 +98,7 @@ const API_KEY = "081d5769835e0277d80d7efa7aca13c6" // Replace with your actual A
 const BASE_URL = "https://api.openweathermap.org/data/2.5"
 
 function fetchWeatherData(city: string): Promise<ProcessedWeatherData> {
+
   return fetch(`${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`)
     .then((response) => {
       if (!response.ok) {
@@ -106,6 +107,7 @@ function fetchWeatherData(city: string): Promise<ProcessedWeatherData> {
       return response.json() as Promise<WeatherResponse>
     })
     .then((data: WeatherResponse) => {
+
       const formatTime = (timestamp: number): string => {
         return new Date(timestamp * 1000).toLocaleTimeString("sv-SE", {
           hour: "2-digit",
@@ -116,11 +118,12 @@ function fetchWeatherData(city: string): Promise<ProcessedWeatherData> {
       return {
         cityName: data.name,
         temperature: Math.round(data.main.temp),
-        weatherDescription: data.weather[0].description,
+        weatherDescription: data.weather[0].main,
         weatherId: data.weather[0].id,
         sunrise: formatTime(data.sys.sunrise),
-        sunset: formatTime(data.sys.sunset)
+        sunset: formatTime(data.sys.sunset)        
       }
+
     })
     .catch((error) => {
       console.error("Error fetching weather data:", error)
@@ -206,21 +209,6 @@ const checkWeatherState = (filter: WeatherState): string => {
   return weatherDescription
 }
 
-/* const changeBodyClass = (weatherDescription: string): void => {
-  const body = document.body
-  if (body === null) {
-    return
-  } else if (weatherDescription === WeatherState.Clear) {
-    body.classList.add("clear")
-  } else if (weatherDescription === WeatherState.Clouds) {
-    body.classList.add("clouds")
-  } else if (weatherDescription === WeatherState.Rain) {
-    body.classList.add("rain")
-  } else if (weatherDescription === WeatherState.Snow) {
-    body.classList.add("snowy")
-  }
-} */
-
 function updateBodyClass(weatherState: string): void {
   const body = document.body
   const validClasses = ["clear", "rain", "clouds", "snow"]
@@ -229,8 +217,8 @@ function updateBodyClass(weatherState: string): void {
   body.classList.remove(...validClasses)
 
   // Lägg till den nya klassen om den är giltig
-  if (validClasses.includes(weatherState)) {
-    body.classList.add(weatherState)
+  if (validClasses.includes(weatherState.toLowerCase())) {
+    body.classList.add(weatherState.toLowerCase())
   }
 }
 
@@ -280,7 +268,7 @@ const renderWeatherIconAndText = (weatherData: any): void => {
   const cityName = weatherData.name || "your location"
   const messageTemplate =
     catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!"
-  const message = messageTemplate.replace("{city}", cityName) // FIXED
+  const message = messageTemplate.replace("{city}", cityName)
 
   // Get the weather icon URL
   const iconUrl = `Assests/${validWeatherState}.png`
@@ -379,7 +367,7 @@ const handleSearch = async (event: Event): Promise<void> => {
 
 
     // Get weather state from weather description
-    const weatherMain = weatherData.weatherDescription.split(" ")[0]
+    const weatherMain = weatherData.weatherDescription.toLowerCase() 
     const weatherState =
       weatherMain === "clear"
         ? WeatherState.Clear
