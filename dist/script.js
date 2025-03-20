@@ -134,7 +134,7 @@ const checkWeatherState = (filter) => {
     else if (filter === WeatherState.Snow) {
         weatherDescription = WeatherState.Snow;
     }
-    return weatherDescription;
+    return "Rain";
 };
 // handleErrorMessages
 const displayTodaysWeather = (today, data) => {
@@ -174,13 +174,14 @@ const renderWeatherIconAndText = (weatherData) => {
     const messageTemplate = catchyTextTemplate[validWeatherState] || "Weather looks good in {city}!";
     const message = messageTemplate.replace('{city}', cityName); // FIXED
     // Get the weather icon URL
-    const iconUrl = `Assets/${validWeatherState}.svg`;
+    const iconUrl = `/Assets/${validWeatherState}.png`;
     // Create a div for the weather icon and text
     const iconTextDiv = document.createElement('div');
     iconTextDiv.classList.add('icon-text');
     iconTextDiv.innerHTML = `
       <img src="${iconUrl}" alt="${validWeatherState}" class="weather-icon">
-      <h1>${message}</h1>
+      <span>HEJ</span>
+      <h1>HELLOOOO${message}</h1>
   `;
     // Append the new weather card inside the `iconText-container`
     elements.iconTextContainer.innerHTML = ''; // Clear previous content
@@ -266,7 +267,10 @@ const handleSearch = async (event) => {
         if (elements.iconTextContainer) {
             elements.iconTextContainer.innerHTML = ''; // Clear previous content
             const message = catchyTextTemplate[weatherState].replace('{city}', weatherData.cityName);
-            const iconUrl = `Assets/weather_icons/${weatherState}.svg`;
+            const iconUrl = `/Assests/${weatherState}.png`;
+            console.log('message:', catchyTextTemplate);
+            console.log('IconURL:', iconUrl);
+            console.log("iconTextContainer:", elements.iconTextContainer);
             elements.iconTextContainer.innerHTML = `
                 <img src="${iconUrl}" alt="${weatherState}" class="weather-icon">
                 <h1>${message}</h1>
