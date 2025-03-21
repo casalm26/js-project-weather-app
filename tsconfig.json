@@ -110,6 +110,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true
   },
-  "include": ["fetchWeather.ts", "script.ts", "search.ts"],
+  "include": ["script.ts"],
   "exclude": ["node_modules"]
 }
