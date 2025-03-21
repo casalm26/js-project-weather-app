@@ -10,7 +10,8 @@ const elements = {
     searchForm: document.getElementById("search-form"),
     searchInput: document.getElementById("search-input"),
     lastSearched: document.getElementById("last-searched"),
-    searchStatus: document.getElementById("search-status")
+    searchStatus: document.getElementById("search-status"),
+    githubIcon: document.getElementById("github-icon")
 };
 // ENUMS
 var WeatherState;
@@ -37,6 +38,7 @@ const fetchWeatherData = (city) => {
         return response.json();
     })
         .then((data) => {
+        // Formats the time from Unix to local Swedish settings
         const formatTime = (timestamp) => {
             return new Date(timestamp * 1000).toLocaleTimeString("sv-SE", {
                 hour: "2-digit",
@@ -92,11 +94,13 @@ const fetchForecastData = (city) => {
 const updateBodyClass = (weatherState) => {
     const body = document.body;
     const validClasses = ["clear", "rain", "clouds", "snow"];
-    // Ta bort gamla väderklasser
+    // Remove old weather classes
     body.classList.remove(...validClasses);
-    // Lägg till den nya klassen om den är giltig
+    elements.githubIcon.classList.remove(...validClasses);
+    // Add the new class if it's valid
     if (validClasses.includes(weatherState.toLowerCase())) {
         body.classList.add(weatherState.toLowerCase());
+        elements.githubIcon.classList.add(weatherState.toLowerCase());
     }
 };
 // Define catchyTextTemplate using city from API as a placeholder
