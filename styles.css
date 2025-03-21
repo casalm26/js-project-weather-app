@@ -17,6 +17,7 @@ footer {
   text-align: center;
   font-size: 14px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 6px;
@@ -162,6 +163,11 @@ h1 {
 }
 
 @media (min-width: 760px) {
+
+  footer {
+  flex-direction: row;
+}
+
   .container {
     max-width: 500px;
   }
