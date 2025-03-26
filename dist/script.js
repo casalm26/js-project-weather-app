@@ -39,10 +39,11 @@ const fetchWeatherData = (city) => {
     })
         .then((data) => {
         // Formats the time from Unix to local Swedish settings
-        const formatTime = (timestamp) => {
-            return new Date(timestamp * 1000).toLocaleTimeString("sv-SE", {
+        const formatTime = (timestamp, timezoneOffset) => {
+            return new Date((timestamp + timezoneOffset) * 1000).toLocaleTimeString("sv-SE", {
                 hour: "2-digit",
-                minute: "2-digit"
+                minute: "2-digit",
+                timeZone: "UTC"
             });
         };
         return {
@@ -50,8 +51,8 @@ const fetchWeatherData = (city) => {
             temperature: Math.round(data.main.temp),
             weatherDescription: data.weather[0].main,
             weatherId: data.weather[0].id,
-            sunrise: formatTime(data.sys.sunrise),
-            sunset: formatTime(data.sys.sunset)
+            sunrise: formatTime(data.sys.sunrise, data.timezone),
+            sunset: formatTime(data.sys.sunset, data.timezone)
         };
     })
         .catch((error) => {

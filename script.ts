@@ -50,6 +50,7 @@ interface SysData {
   country: string
   sunrise: number
   sunset: number
+  timezone: number
 }
 
 interface WeatherResponse {
@@ -57,6 +58,7 @@ interface WeatherResponse {
   main: MainWeatherData
   weather: WeatherCondition[]
   sys: SysData
+  timezone: number
 }
 
 interface ProcessedWeatherData {
@@ -110,10 +112,11 @@ const fetchWeatherData = (city: string): Promise<ProcessedWeatherData> => {
     .then((data: WeatherResponse) => {
 
       // Formats the time from Unix to local Swedish settings
-      const formatTime = (timestamp: number): string => {
-        return new Date(timestamp * 1000).toLocaleTimeString("sv-SE", {
+      const formatTime = (timestamp: number, timezoneOffset: number): string => {
+        return new Date((timestamp + timezoneOffset) * 1000).toLocaleTimeString("sv-SE", {
           hour: "2-digit",
-          minute: "2-digit"
+          minute: "2-digit",
+          timeZone: "UTC"
         })
       }
 
@@ -122,8 +125,8 @@ const fetchWeatherData = (city: string): Promise<ProcessedWeatherData> => {
         temperature: Math.round(data.main.temp),
         weatherDescription: data.weather[0].main,
         weatherId: data.weather[0].id,
-        sunrise: formatTime(data.sys.sunrise),
-        sunset: formatTime(data.sys.sunset)        
+        sunrise: formatTime(data.sys.sunrise, data.timezone),
+        sunset: formatTime(data.sys.sunset, data.timezone)        
       }
 
     })
